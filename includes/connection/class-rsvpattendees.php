@@ -1,8 +1,8 @@
 <?php
 /**
- * Connection - Attendees
+ * Connection - RSVPAttendees
  *
- * Registers connections to Attendee
+ * Registers connections to RSVPAttendee
  *
  * @package WPGraphQL\QL_Events\Connection
  * @since   0.0.1
@@ -14,9 +14,9 @@ use Tribe__Tickets__RSVP as RSVP;
 use WPGraphQL\Connection\PostObjects;
 
 /**
- * Class - Attendees
+ * Class - RSVPAttendees
  */
-class Attendees extends PostObjects {
+class RSVPAttendees extends PostObjects {
 	/**
 	 * Registers the various connections from other Types to Attendees
 	 */
@@ -27,10 +27,19 @@ class Attendees extends PostObjects {
 				get_post_type_object( RSVP::ATTENDEE_OBJECT ),
 				array(
 					'fromType'      => 'Event',
-					'toType'        => 'Attendee',
-					'fromFieldName' => 'attendees',
+					'toType'        => 'RSVPAttendee',
+					'fromFieldName' => 'rSVPAttendees',
 				)
 			)
 		);
+	}
+
+	public static function where_args() {
+		return [
+			'eventsIn' => [
+				'type' => [ 'list_of' => 'ID' ],
+				'description' => __( 'Filter the connection based on event Id', 'ql-events' ),
+			]
+		];
 	}
 }
